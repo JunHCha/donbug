@@ -1,0 +1,25 @@
+.DS_Store
+
+# Virtual Environment
+.venv
+.python-version
+# Secret Environment
+**/secrets/*
+*.env.*
+*.env
+
+# cache
+__pycache__
+.pyc
+.pytest_cache
+.mypy_cache
+
+# settings
+.vscode
+Pipfile.lock
+
+# media and static
+*/media/
+static
+
+dump.rdb

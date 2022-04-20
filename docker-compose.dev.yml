@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+    env_file:
+      - ./secrets/.env.dev
+    networks:
+      - db_network
+    volumes:
+      - .:/workspace
+      - donbug-backend-packages:/usr/local/lib/python3.10/site-packages
+      - donbug-backend-bin:/usr/local/bin
+
+  db:
+    image: postgres:10-alpine
+    env_file:
+      - ./secrets/.env.dev
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    ports:
+      - 5125:5432
+    networks:
+      - db_network
+    environment:
+      - POSTGRES_DB=donbug
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+
+networks:
+  db_network:
+    driver: bridge
+
+volumes:
+  donbug-backend-packages:
+  donbug-backend-bin:
+  db-volume:

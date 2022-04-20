@@ -1,0 +1,16 @@
+FROM python:3.10.4
+
+RUN apt-get update -y && apt-get install wget build-essential git vim -y
+#timezone
+RUN cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime && \
+    echo "Asia/Seoul" > /etc/timezone
+ENV PYTHONHASHSEED=random \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PYTHONUNBUFFERED=1\
+    PYTHONPATH=$PYTHONPATH:.
+EXPOSE 8000
+RUN pip install --upgrade pip && pip install poetry
+WORKDIR /workspace
+RUN poetry config virtualenvs.create false
+CMD ["/bin/bash", "scripts/start-dev.sh"]
